@@ -62,11 +62,16 @@ function App() {
 
           <button onClick={handleClick}>Get Info</button>
 
-          <button className='poke-coach-button' onClick={handleAiRequest} disabled={isLoadingAI || !inputName}>Get Help from AI Pokécoach</button>
+          <button className='poke-coach-button' onClick={handleAiRequest} disabled={isLoadingAI || !pokemon}>Get Help from AI Pokécoach</button>
         </div>
       </div>
 
-      {isLoadingAI && <div className="spinner"></div>}
+      {isLoadingAI && (
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <div>This may take some time to load.</div>
+        </div>
+      )}
 
       {pokemon && <PokemonDisplay pokemonData={pokemon} analysis={pokeAnalysis} teamPokemon={teamPokemon}/>}
     </>

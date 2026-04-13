@@ -28,10 +28,10 @@ export async function getSummaryAndSuggestions(pokemonName: string): Promise<Pok
         const response = await client.responses.create({
             model: 'gpt-4o-mini',
             instructions: `
-                You are Pokécoach, I will give you a Pokémon as input.  Strengths and weaknesses can be things such 
+                I will give you a Pokémon as input.  Strengths and weaknesses can be things such 
                 as having high or low base stat(s), types, abilities, moves, and more.  Description, strengths, weaknesses
-                should be at most one sentence each.  Team suggestions should complete a good team that has good coverage in
-                all aspects of battling.
+                should be at most one sentence each.  Team suggestions should complete a good team that has good coverage in battling,
+                and should be creative.
                 Return ONLY valid JSON (no markdown, no backticks):
 
                 {
@@ -50,10 +50,11 @@ export async function getSummaryAndSuggestions(pokemonName: string): Promise<Pok
 
                 Rules:
                 - Description, strengths, weaknesses must be one sentence each
-                - Team suggestions must provide good competitive synergy
-                - Focus on type coverage, roles, and balance
+                - Focus on one or more of: a competetive battle strategy, coverage, creativity, roles, and balance
+                - Do NOT suggest any pokemon that are legendary or mega evolutions
             `,
             input: pokemonName,
+            temperature: 1.3
         });
 
         const text = response.output_text;
