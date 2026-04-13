@@ -1,13 +1,26 @@
 import { useState } from 'react'
 import './App.css'
-import { getPokemon } from './utils/pokemon_get_utils'
+import { getPokemon, type PokemonData } from './utils/pokemon_get_utils'
+import { PokemonDisplay } from './PokemonDisplay';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [pokemon, setPokemon] = useState<PokemonData | null>(null);
+
+  const handleClick = async () => {
+    const data: PokemonData | undefined = await getPokemon("scizor");
+
+    if (data) {
+      setPokemon(data);
+    }
+  };
 
   return (
     <>
-      <button onClick={() => getPokemon('empoleon')}>Yo</button>
+      <h1>PokéCoach</h1>
+
+      <button onClick={handleClick}>Get Info</button>
+
+      {pokemon && <PokemonDisplay pokemonData={pokemon} />}
     </>
   )
 }
