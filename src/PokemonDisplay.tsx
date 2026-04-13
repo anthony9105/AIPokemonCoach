@@ -1,5 +1,7 @@
 import { POKEMON_TYPE_COLORS, type PokemonData } from "./utils/pokemon_get_utils";
 import './Pokemon.css';
+import { BaseStats } from "./BaseStats";
+import type { PokemonAnalysis } from "./utils/openai_utils";
 
 
 function capFirst(str: string): string {
@@ -8,20 +10,22 @@ function capFirst(str: string): string {
 
 
 function getStatColour(value: number): string {
-  if (value >= 120) return "#22c55e"; // green
-  if (value >= 90) return "#86efac";  // light green
-  if (value >= 60) return "#facc15";  // yellow
-  if (value >= 30) return "#fb923c";  // orange
-  return "#ef4444"; // red
+  if (value >= 150) return "#228fc5";
+  if (value >= 120) return "#22c55e";
+  if (value >= 90) return "#86efac";
+  if (value >= 60) return "#facc15";
+  if (value >= 30) return "#fb923c";
+  return "#ef4444";
 }
 
 
 type Props = {
   pokemonData: PokemonData;
+  analysis: PokemonAnalysis | null;
 };
 
 
-export function PokemonDisplay({ pokemonData }: Props) {
+export function PokemonDisplay({ pokemonData, analysis }: Props) {
   return (
     <div>
       <h2>{capFirst(pokemonData.name)}</h2>
@@ -35,9 +39,8 @@ export function PokemonDisplay({ pokemonData }: Props) {
                 alt={pokemonData.name}
             />
         ))}
-        </div>
+      </div>
 
-      {/* <p>Types: {pokemonData.types.map(capFirst).join(", ")}</p> */}
 
       <div className="type-container">
         {pokemonData.types.map((type) => (
@@ -51,26 +54,46 @@ export function PokemonDisplay({ pokemonData }: Props) {
         ))}
         </div>
 
-      <h3 className='base-stats-title'>Base Stats:</h3>
-      <ul className='base-stats'>
-        {pokemonData.stats.map((stat) => (
-            <li key={stat.name} className="stat-row">
-                <span className="stat-name">{stat.name}</span>
+      <div className="info-grid">
+        <BaseStats pokemonData={pokemonData} />
 
-                <div className="stat-bar-bg">
-                    <div
-                    className="stat-bar-fill"
-                    style={{
-                        width: `${(stat.base_stat / 255) * 300}px`,
-                        backgroundColor: getStatColour(stat.base_stat),
-                    }}
-                    />
+        {analysis && (
+          <div className="analysis-card">
+            <h3 className="coach-title">PokéCoach Analysis</h3>
+
+            <p className='coach-text'>
+              {analysis.description}
+            </p>
+
+            <p className="coach-text">
+              <strong>Strengths:</strong> {analysis.strengths}
+            </p>
+
+            <p className="coach-text">
+              <strong>Weaknesses:</strong> {analysis.weaknesses}
+            </p>
+
+            <div className="team-grid">
+                <h4>Suggested Teammates</h4>
+                {analysis.teamSuggestions.map((mon) => (
+                <div key={mon.name} className="team-card">
+                    <h4 className="teammate-name">{mon.name}</h4>
+
+                    <p className="teammate-text">{mon.description}</p>
+
+                    <p className="teammate-text">
+                        <strong>✔</strong> {mon.strengths}
+                    </p>
+
+                    <p className="teammate-text">
+                        <strong>✖</strong> {mon.weaknesses}
+                    </p>
                 </div>
-
-                <span className="stat-value">{stat.base_stat}</span>
-            </li>
-        ))}
-      </ul>
+                ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

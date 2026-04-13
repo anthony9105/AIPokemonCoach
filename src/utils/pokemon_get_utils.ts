@@ -20,7 +20,6 @@ export const POKEMON_TYPES: readonly string[] = [
 ] as const;
 export type PokemonType = typeof POKEMON_TYPES[number];
 
-
 export const POKEMON_TYPE_COLORS: Record<PokemonType, string> = {
   normal: "#A8A77A",
   fire: "#EE8130",
