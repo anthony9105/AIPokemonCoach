@@ -57,14 +57,9 @@ export async function getSummaryAndSuggestions(pokemonName: string): Promise<Pok
         });
 
         const text = response.output_text;
-        console.log(text);
-        
 
         try {
-            const yo = JSON.parse(text);
-            console.log(yo);
-            
-            return yo;
+            return JSON.parse(text);
         } catch (e) {
             console.error("Failed to parse AI response:", text);
             return undefined;

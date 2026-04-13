@@ -30,7 +30,7 @@ export function BaseStats({pokemonData}: Props) {
                             <div
                             className="stat-bar-fill"
                             style={{
-                                width: `${(stat.base_stat / 255) * 300}px`,
+                                width: `${(stat.base_stat / 255) * 305}px`,
                                 backgroundColor: getStatColour(stat.base_stat),
                             }}
                             />

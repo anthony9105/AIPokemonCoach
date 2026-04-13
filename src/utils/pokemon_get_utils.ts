@@ -58,7 +58,7 @@ export async function getPokemon(pokemonName: string): Promise<PokemonData | und
         const response: Response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
 
         if (!response.ok) {
-            console.log(`Error, status code: ${response.status}`);
+            console.error(`Error, status code: ${response.status}`);
             return;
         }
 
@@ -76,8 +76,6 @@ export async function getPokemon(pokemonName: string): Promise<PokemonData | und
             })),
             types: data.types.map((t: any) => t.type.name)
         };
-
-        console.log(pokemon);
 
         return pokemon;
     }
